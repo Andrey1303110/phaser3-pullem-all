@@ -61,8 +61,10 @@ class PullingObject extends Phaser.GameObjects.Sprite {
             this.initSteps();
         }
 
-        this.colors.other -= 5 / (config.stats.stamina * .01);
-        if (this.colors.other < 85) {
+        let limit = 65;
+
+        this.colors.other -= ((this.colors.red - limit)/35) / (config.stats.stamina * .01);
+        if (this.colors.other < limit) {
             this.colors.other = this.colors.red;
             this.y = this.initPosition;
             this.initSteps();
