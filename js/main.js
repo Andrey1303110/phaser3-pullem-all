@@ -40,7 +40,9 @@ var config = {
         income: 100
     },
 
-    moneyIncrease: 60, 
+    moneyIncrease: 60,
+
+    redColorLimit: 65,
 };
 
 var game = new Phaser.Game(config);
