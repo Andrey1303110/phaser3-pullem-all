@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <style>
+        body {
+            margin: 0 !important;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'coolvetica';
+            src: url("fonts/coolvetica.otf") format("opentype");
+        }
+
+        .font {
+            font-family: 'coolvetica';
+            position: absolute;
+            left: -100vw;
+            top: -100vw;
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="font">.</div>
+    <div id="gameDiv"></div>
+    <script src="js/phaser.min.js"></script>
+    <script src="js/PullingObject.js"></script>
+    <script src="js/Trap.js"></script>
+    <script src="js/PreloadScene.js"></script>
+    <script src="js/StartScene.js"></script>
+    <script src="js/GameScene.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
