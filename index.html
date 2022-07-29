@@ -23,19 +23,29 @@
             font-family: 'coolvetica';
             src: url("fonts/coolvetica.otf") format("opentype");
         }
+        @font-face {
+            font-family: 'kidcraft';
+            src: url("fonts/KidCraft.ttf") format("truetype");
+        }
 
-        .font {
-            font-family: 'coolvetica';
+        .preloadFont {
             position: absolute;
             left: -100vw;
             top: -100vw;
             visibility: hidden;
         }
+        .coolvetica{
+            font-family: 'coolvetica';
+        }
+        .kidcraft{
+            font-family: 'kidcraft';
+        }
     </style>
 </head>
 
 <body>
-    <div class="font">.</div>
+    <div class="preloadFont coolvetica">.</div>
+    <div class="preloadFont kidcraft">.</div>
     <div id="gameDiv"></div>
     <script src="js/phaser.min.js"></script>
     <script src="js/PullingObject.js"></script>
