@@ -9,9 +9,17 @@ class PullingObject extends Phaser.GameObjects.Sprite {
         this.setScale(data.scale);
         this.overlap_cof = data.overlap_cof;
         this.initColors();
-        test = this;
         this.initSteps();
-        this.scene.events.on('update', this.update, this);
+
+        this.pullingIsOn = true;
+
+        this.colorTimer = this.scene.time.addEvent({
+            delay: 1000/60,
+            callback: ()=>{this.resetColorObject(1500/30)},
+            callbackScope: this,
+            paused: true,
+            repeat: -1,
+        });
     }
 
     initColors() {
@@ -39,44 +47,89 @@ class PullingObject extends Phaser.GameObjects.Sprite {
         this.scene.checkUpgradeCardsStatus();
     }
 
-    pull() {
-        let pulling_distance = (this.initPosition + (this.displayHeight / 2) * this.overlap_cof) - (this.scene.trap.y - this.scene.trap.displayHeight);
-        let pulling_step = pulling_distance / 100 * (config.stats.strength * .01);
+    pull(pointer) {
+        if (this.pullingIsOn && pointer?.isDown) {
+            this.resetTween.pause();
 
-        this.y -= pulling_step;
+            let pulling_distance = (this.initPosition + (this.displayHeight / 2) * this.overlap_cof) - (this.scene.trap.y - this.scene.trap.displayHeight);
+            let pulling_step = pulling_distance / 100 * (config.stats.strength * .001);
+    
+            this.y -= pulling_step;
+    
+            let progress = ((pulling_distance - ((this.y + (this.displayHeight / 2) * this.overlap_cof) - (this.scene.trap.y - this.scene.trap.displayHeight))) / pulling_distance) * 100;
+    
+            this.progressCheck(progress);
+    
+            if (this.y + (this.displayHeight / 2) * this.overlap_cof < this.scene.trap.y - this.scene.trap.displayHeight) {
+                console.log('level complete');
+                this.y = this.initPosition;
+    
+                if (this.isTinted) {
+                    this.clearTint();
+                    this.initColors();
+                }
 
-        let progress = ((pulling_distance - ((this.y + (this.displayHeight / 2) * this.overlap_cof) - (this.scene.trap.y - this.scene.trap.displayHeight))) / pulling_distance) * 100;
-
-        this.progressCheck(progress);
-
-        if (this.y + (this.displayHeight / 2) * this.overlap_cof < this.scene.trap.y - this.scene.trap.displayHeight) {
-            console.log('end overlap');
-            this.y = this.initPosition;
-
-            if (this.isTinted) {
-                this.clearTint();
-                this.initColors();
+                this.initSteps();
             }
-
-            this.initSteps();
+    
+            this.colors.other -= ((this.colors.red - config.redColorLimit)/350) / (config.stats.stamina * .01);
+            if (this.colors.other < config.redColorLimit) {
+                console.log('over color');
+                this.resetPosition();
+            }
+            this.setTint(Phaser.Display.Color.GetColor(this.colors.red, this.colors.other, this.colors.other));
+    
+            /*
+            if("vibrate" in window.navigator) {
+                window.navigator.vibrate(200);
+            }
+            */
         }
+    }
 
-        this.colors.other -= ((this.colors.red - config.redColorLimit)/35) / (config.stats.stamina * .01);
-        if (this.colors.other < config.redColorLimit) {
-            this.colors.other = this.colors.red;
-            this.y = this.initPosition;
-            this.initSteps();
+    resetPosition(){
+        this.pullingIsOn = false;
+
+        if (this.y === this.initPosition) {
+            this.resetTween.pause();
+            this.colorTimer.paused = true;
+        } else {
+            this.resetTween.play();
+            this.colorTimer.paused = false;
         }
-        this.setTint(Phaser.Display.Color.GetColor(this.colors.red, this.colors.other, this.colors.other));
+    }
+
+    resetColorObject(updateRate){
+        if (this.y < this.initPosition) {
+            this.colors.other += ((this.colors.red - config.redColorLimit)/(updateRate)) / (config.stats.stamina * .01);
+            if (this.colors.other >= 255) {
+                this.colors.other = 255;
+            }
+            this.setTint(Phaser.Display.Color.GetColor(this.colors.red, this.colors.other, this.colors.other));
+        } else {
+            this.colorTimer.paused = true;
+        }
     }
 
     setPositions(trap) {
         this.x = trap.x;
         this.y = trap.y - this.displayHeight / 2;
         this.initPosition = this.y;
-    }
 
-    update() {
-
+        this.resetTween = this.scene.tweens.add({
+            targets: this,
+            y: this.initPosition,   
+            ease: 'Power2',
+            duration: 1500,
+            paused: true,
+            onComplete: ()=>{
+                this.pullingIsOn = true;
+                if (this.isTinted) {
+                    this.clearTint();
+                    this.initColors();
+                }
+                this.initSteps();
+            }
+        });
     }
 }
