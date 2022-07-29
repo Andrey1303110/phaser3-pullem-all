@@ -40,8 +40,8 @@ var config = {
         income: 100
     },
 
-    moneyIncrease: 60,
-
+    upgradeCardCost: 35,
+    moneyIncrease: 35,
     redColorLimit: 65,
 };
 
