@@ -10,7 +10,7 @@ var config = {
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
 
-    scene: [PreloadScene, StartScene, GameScene],
+    scene: [PreloadScene, StartScene, GameScene, FinishScene],
 
     variatons: [
         {

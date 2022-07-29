@@ -64,15 +64,7 @@ class PullingObject extends Phaser.GameObjects.Sprite {
             this.progressCheck(progress);
     
             if (this.y + (this.displayHeight / 2) * this.overlap_cof < this.scene.trap.y - this.scene.trap.displayHeight) {
-                console.log('level complete');
-                this.y = this.initPosition;
-    
-                if (this.isTinted) {
-                    this.clearTint();
-                    this.initColors();
-                }
-
-                this.initSteps();
+                this.scene.scene.start('Finish', this);
             }
     
             this.colors.other -= ((this.colors.red - config.redColorLimit)/350) / (config.stats.stamina * .01);
