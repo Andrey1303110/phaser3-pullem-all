@@ -34,9 +34,9 @@ class FinishScene extends Phaser.Scene {
 
         this.tweens.add({
             targets: this.object,
-            scale: this.finalObject.scale * 1.25,
+            scale: this.finalObject.scale * 1.35,
             ease: 'Linear',
-            duration: 20000,
+            duration: 25000,
         });
     }
 
