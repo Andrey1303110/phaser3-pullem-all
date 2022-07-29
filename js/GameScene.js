@@ -24,6 +24,9 @@ class GameScene extends Phaser.Scene {
             repeat: 0,
         });
         */
+        this.createMoneyAnim(this.cards.strength.cost);
+
+        this.createStartText();
     }
 
     checkPointer(pointer){
@@ -35,8 +38,34 @@ class GameScene extends Phaser.Scene {
         });
     }
 
-    update() {
-        
+    createStartText(){
+        if (this.startText) {
+            this.startText.destroy();
+        }
+        let textStyle = {
+            font: `${config.height * .075}px coolvetica`,
+            fill: '#ffffff',
+        };
+        this.startText = this.add.text(config.width/2, config.height * .65, 'Hold to pull', textStyle).setOrigin(0.5).setAlpha(.95);
+
+        let initScale = this.startText.scale;
+
+        let timeline = this.tweens.createTimeline();
+
+        timeline.add({
+            targets: this.startText,
+            scale: this.startText.scale + .25,
+            ease: 'Power2',
+            duration: 550,
+        });
+        timeline.add({
+            targets: this.startText,
+            scale: initScale,
+            ease: 'Power2',
+            duration: 550,
+        });
+        timeline.loop = -1;
+        timeline.play();
     }
 
     createBG() {
@@ -92,7 +121,7 @@ class GameScene extends Phaser.Scene {
     }
 
     createUpgradeCard(x, y, color, name){
-        let strokeWidth = 5;
+        let strokeWidth = 4;
         this.cards[name] = this.add.rectangle(x, y, config.width * .0785, config.width * .0745, color).setStrokeStyle(strokeWidth, 0xfffff0);
         this.cards[name].name = name;
         this.upgardeCard(this.cards[name]);
@@ -136,7 +165,7 @@ class GameScene extends Phaser.Scene {
 
     checkUpgradeCardsStatus(){
         Object.keys(this.cards).forEach(name => {
-            if(this.cards[name].cost >= this.money) {
+            if(this.cards[name].cost > this.money) {
                 this.cards[name].block.setAlpha(.35);
             } else {
                 this.cards[name].block.setAlpha(0.001);
@@ -160,7 +189,7 @@ class GameScene extends Phaser.Scene {
             this.decreaseMoney(card.cost);
         }
         card?.level ? card.level++ : card.level = 1;
-        card.cost = Math.round((40 * card.level) * (0.115 * card.level + 1));
+        card.cost = Math.round((config.upgradeCardCost * card.level) * (0.135 * card.level + 1));
         if (card.level > 1) {
             card.levelText.setText(`Lv. ${card.level}`);
             card.costText.setText(card.cost);
@@ -172,11 +201,61 @@ class GameScene extends Phaser.Scene {
     increaseMoney(value){
         this.money += Math.round(value);
         this.cashText.setText(this.money);
+        this.checkUpgradeCardsStatus();
     }
 
     decreaseMoney(value){
         this.money -= Math.round(value);
         this.cashText.setText(this.money);
+    }
+
+    createMoneyAnim(value){
+        let textStyle = {
+            font: `${config.width * .0295}px kidcraft`,
+            fill: '#56D639',
+        };
+        let text = this.add.text(this.object.x, this.object.y, '+' + value, textStyle)
+            .setOrigin(0.5)
+            .setScale(10)
+            .setAlpha(0);
+
+    
+        let timeline = this.tweens.createTimeline();
+        let angle = 25;
+
+        timeline.add({
+            targets: text,
+            scale: 1,
+            alpha: 1,
+            ease: 'Power2',
+            duration: 650,
+        });
+        timeline.add({
+            targets: text,
+            angle: angle,
+            ease: 'Linear',
+            duration: 425,
+        });
+        timeline.add({
+            targets: text,
+            angle: angle * -1,
+            ease: 'Linear',
+            duration: 425,
+        });
+        timeline.add({
+            targets: text,
+            x: this.cashText.x,
+            y: this.cashText.y,
+            alpha: 0,
+            ease: 'Linear',
+            duration: 575,
+            onComplete: () => {
+                text.destroy();
+                this.increaseMoney(value);
+            }
+        });
+
+        timeline.play();
     }
 
     /*

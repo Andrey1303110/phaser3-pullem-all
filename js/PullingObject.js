@@ -31,9 +31,11 @@ class PullingObject extends Phaser.GameObjects.Sprite {
 
     initSteps() {
         this.progress_steps = [
-            {value: 90, isOn: false},
-            {value: 60, isOn: false},
-            {value: 30, isOn: false},
+            {value: 95, isOn: false},
+            {value: 81, isOn: false},
+            {value: 57, isOn: false},
+            {value: 35, isOn: false},
+            {value: 15, isOn: false},
         ];
     }
 
@@ -41,7 +43,7 @@ class PullingObject extends Phaser.GameObjects.Sprite {
         this.progress_steps.forEach(element => {
             if (progress > element.value && !element.isOn) {
                 element.isOn = true;
-                this.scene.increaseMoney(config.stats.income * .01 * config.moneyIncrease);
+                this.scene.createMoneyAnim(Math.round(config.stats.income * .01 * config.moneyIncrease));
             }
         });
         this.scene.checkUpgradeCardsStatus();
@@ -49,6 +51,7 @@ class PullingObject extends Phaser.GameObjects.Sprite {
 
     pull(pointer) {
         if (this.pullingIsOn && pointer?.isDown) {
+            this.scene.startText.destroy();
             this.resetTween.pause();
 
             let pulling_distance = (this.initPosition + (this.displayHeight / 2) * this.overlap_cof) - (this.scene.trap.y - this.scene.trap.displayHeight);
@@ -97,6 +100,8 @@ class PullingObject extends Phaser.GameObjects.Sprite {
             this.resetTween.play();
             this.colorTimer.paused = false;
         }
+
+        this.scene.createStartText();
     }
 
     resetColorObject(updateRate){
