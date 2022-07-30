@@ -126,8 +126,8 @@ class GameScene extends Phaser.Scene {
                 x: (card.x - card.displayWidth * .5) + card.displayWidth/8 * i,
                 y: Phaser.Math.Between((card.y - card.displayHeight * .5) * 100, (card.y + card.displayHeight * .5)*100)/100,
                 scale: config.height * .075 * (Phaser.Math.Between(50, 150)/100),
-                alpha: Phaser.Math.Between(50, 90)/100,
-                duration: Phaser.Math.Between(700, 1200),
+                alpha: Phaser.Math.Between(75, 100)/100,
+                duration: Phaser.Math.Between(550, 1250),
             }
             
             let plus_symbol = this.add.text(data.x, data.y, '+', {
@@ -142,6 +142,17 @@ class GameScene extends Phaser.Scene {
                 ease: 'Linear',
                 duration: data.duration,
                 onComplete: () => { plus_symbol.destroy() }
+            });
+        }
+
+        card.block.setAlpha(.35);
+
+        if(card.cost < this.money) {
+            this.tweens.add({
+                targets: card.block,
+                alpha: 0.001,
+                ease: 'Linear',
+                duration: 1250,
             });
         }
     }
@@ -182,7 +193,6 @@ class GameScene extends Phaser.Scene {
             .setPosition(x + this.cards[name].costText.displayWidth * .75, y + this.cards[name].displayHeight * .3);
 
         this.cards[name].block = this.add.rectangle(x, y, this.cards[name].displayWidth + strokeWidth, this.cards[name].displayHeight + strokeWidth, 0x000000)
-            .setAlpha(0.1)
             .setInteractive()
             .on('pointerdown', this.buyUpgrade)
             .on('pointerup', ()=>{this.object.pullingIsOn = true;});
