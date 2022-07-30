@@ -24,7 +24,7 @@ class GameScene extends Phaser.Scene {
             repeat: 0,
         });
         */
-        this.createMoneyAnim(this.cards.strength.cost);
+        this.createMoneyAnim(this.cards.strength.cost * 10);
 
         this.createStartText();
     }
@@ -148,11 +148,12 @@ class GameScene extends Phaser.Scene {
         card.block.setAlpha(.35);
 
         if(card.cost < this.money) {
-            this.tweens.add({
+            card.upgardeAnim = this.tweens.add({
                 targets: card.block,
                 alpha: 0.001,
                 ease: 'Linear',
                 duration: 1250,
+                onComplete: ()=>{ card.upgardeAnim = false; this.checkUpgradeCardsStatus(); },
             });
         }
     }
@@ -162,6 +163,7 @@ class GameScene extends Phaser.Scene {
         this.cards[name] = this.add.rectangle(x, y, config.width * .0785, config.width * .0745, '0x' + color.slice(1)).setStrokeStyle(strokeWidth, 0xfffff0);
         this.cards[name].name = name;
         this.cards[name].color = color;
+        this.cards[name].upgardeAnim = false;
         this.upgardeCard(this.cards[name]);
 
         let textStyle = {
@@ -194,7 +196,7 @@ class GameScene extends Phaser.Scene {
 
         this.cards[name].block = this.add.rectangle(x, y, this.cards[name].displayWidth + strokeWidth, this.cards[name].displayHeight + strokeWidth, 0x000000)
             .setInteractive()
-            .on('pointerdown', this.buyUpgrade)
+            .on('pointerdown', ()=>{this.buyUpgrade(this.cards[name])}, this)
             .on('pointerup', ()=>{this.object.pullingIsOn = true;});
         this.cards[name].block.name = name;
     }
@@ -209,12 +211,15 @@ class GameScene extends Phaser.Scene {
         });
     }
 
-    buyUpgrade(){
-        this.scene.object.pullingIsOn = false;
-        let upgradeName = this.name;
-        let card = this.scene.cards[upgradeName];
-        if (this.scene.money >= card.cost) {
-            this.scene.upgardeCard(card);
+    buyUpgrade(card){
+        this.checkUpgradeCardsStatus();
+        if (card.upgardeAnim) {
+            card.upgardeAnim.pause();
+            card.block.setAlpha(.35);
+        }
+        this.object.pullingIsOn = false;
+        if (this.money >= card.cost) {
+            this.upgardeCard(card);
         } else {
             console.log('not enought money');
         }
