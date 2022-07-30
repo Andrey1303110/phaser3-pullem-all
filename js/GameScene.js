@@ -25,10 +25,33 @@ class GameScene extends Phaser.Scene {
             repeat: 0,
         });
         */
-
+        // put in next string necessary amount of money as you need 
         this.createMoneyAnim(this.cards.strength.cost);
         this.createStartText();
+
+        this.addListeners();
     }
+
+    addListeners() {
+        window.addEventListener("orientationchange", () => { this.reinitHUD() });
+        window.addEventListener("resize", () => { this.reinitHUD() });
+    }
+
+    reinitHUD() {
+        setEndpoints();
+        if (this.cashBG) {
+            this.cashBG.destroy();
+            this.cashText.destroy();
+            this.createCashText();
+        }
+        if (this.gameIcon) {
+            this.gameIcon.destroy();
+            this.createGameIcon();
+        }
+        if (this.cards) {
+            this.createUpgradeCards();
+        }
+    };
 
     checkPointer(pointer){
         this.pointerTimer = this.time.addEvent({
@@ -47,7 +70,7 @@ class GameScene extends Phaser.Scene {
             font: `${config.height * .075}px coolvetica`,
             fill: '#ffffff',
         };
-        this.startText = this.add.text(config.width/2, config.height * .65, 'Hold to pull', textStyle).setOrigin(0.5).setAlpha(.95);
+        this.startText = this.add.text(config.width/2, config.height * .67, 'Hold to pull', textStyle).setOrigin(0.5).setAlpha(.95);
 
         let initScale = this.startText.scale;
 
@@ -70,7 +93,7 @@ class GameScene extends Phaser.Scene {
     }
 
     createBG() {
-        this.sceneBG = this.add.sprite(config.width/2, screenEndpoints.bottom, this.variant.bg).setAlpha(.8).setOrigin(.5, 1).setInteractive();
+        this.sceneBG = this.add.sprite(config.width/2, config.height/2, this.variant.bg).setAlpha(.8).setOrigin(.5).setInteractive();
 
         let scaleX = this.cameras.main.width / this.sceneBG.width;
         let scaleY = this.cameras.main.height / this.sceneBG.height;
@@ -153,16 +176,16 @@ class GameScene extends Phaser.Scene {
     }
 
     createCashText(){
-        let bg = this.add.rectangle(screenEndpoints.right - config.width * .007, screenEndpoints.top + config.width * .007, config.width * .085, config.width * .025, 0x000000).setAlpha(0.3).setOrigin(1, 0);
+        this.cashBG = this.add.rectangle(screenEndpoints.right - config.width * .007, screenEndpoints.top + config.width * .007, config.width * .085, config.width * .025, 0x000000).setAlpha(0.3).setOrigin(1, 0);
         
         let textStyle = {
-            font: `${bg.displayHeight * .8}px coolvetica`,
+            font: `${this.cashBG.displayHeight * .8}px coolvetica`,
             fill: '#ffffff',
         };
-        this.cashText = this.add.text(bg.x - bg.displayWidth/2 - bg.displayWidth/4.5, bg.y + bg.displayHeight/2, this.money, textStyle).setOrigin(0.5).setAlpha(.95);
+        this.cashText = this.add.text(this.cashBG.x - this.cashBG.displayWidth/2 - this.cashBG.displayWidth/4.5, this.cashBG.y + this.cashBG.displayHeight/2, this.money, textStyle).setOrigin(0.5).setAlpha(.95);
 
-        this.cashIcon = this.add.sprite(bg.x - bg.displayWidth/2 + bg.displayWidth/4.5, this.cashText.y, 'cash')
-            .setDisplaySize(bg.displayHeight * .9, bg.displayHeight * .9)
+        this.cashIcon = this.add.sprite(this.cashBG.x - this.cashBG.displayWidth/2 + this.cashBG.displayWidth/4.5, this.cashText.y, 'cash')
+            .setDisplaySize(this.cashBG.displayHeight * .9, this.cashBG.displayHeight * .9)
     }
 
     createUpgardeAnimation(card){
@@ -203,13 +226,35 @@ class GameScene extends Phaser.Scene {
         }
     }
 
+    deleteUpgardeCard(card){
+        card.nameText.destroy();
+        card.powerupIcon.destroy();
+        card.costBG.destroy();
+        card.costText.destroy();
+        card.costIcon.destroy();
+        card.levelText.destroy();
+        card.block.destroy();
+    }
+
     createUpgradeCard(x, y, color, name){
+        let level;
+        if (!this.cards[name]?.level) {
+            level = 1;
+        }
+
+        if (this.cards[name]) {
+            this.deleteUpgardeCard(this.cards[name]);
+            level = this.cards[name].level;
+            this.cards[name].destroy();
+        }
+
         let strokeWidth = 4;
         this.cards[name] = this.add.rectangle(x, y, config.width * .0785, config.width * .0745, '0x' + color.slice(1)).setStrokeStyle(strokeWidth, 0xfffff0);
         this.cards[name].name = name;
         this.cards[name].color = color;
         this.cards[name].upgardeAnim = false;
-        this.upgardeCard(this.cards[name]);
+        (!this.cards[name].level) ? this.cards[name].level = level : this.cards[name].level = 1;
+        this.cards[name].cost = Math.round((config.upgradeCardCost * this.cards[name].level) * (0.135 * this.cards[name].level + 1));
 
         let textStyle = {
             font: `${config.width * .0115}px coolvetica`,
@@ -223,13 +268,13 @@ class GameScene extends Phaser.Scene {
         this.cards[name].nameText = this.add.text(x, y, name.toUpperCase(), textStyle).setOrigin(0.5).setAlpha(.9);
         this.cards[name].nameText.setPosition(this.cards[name].nameText.x + this.cards[name].displayWidth * .1, this.cards[name].nameText.y);
 
-        this.add.sprite(x, y, name).setDisplaySize(this.cards[name].displayWidth * .25, this.cards[name].displayWidth * .25)
+        this.cards[name].powerupIcon = this.add.sprite(x, y, name).setDisplaySize(this.cards[name].displayWidth * .25, this.cards[name].displayWidth * .25)
             .setPosition(this.cards[name].x - this.cards[name].displayWidth * .3375, y);
 
         this.cards[name].levelText = this.add.text(x, y, 'Lv. ' + this.cards[name].level, textStyle).setOrigin(0.5).setAlpha(.9);
         this.cards[name].levelText.setPosition(x, y - this.cards[name].displayHeight * .3);
 
-        this.add.rectangle(x, y, this.cards[name].displayWidth * .875, this.cards[name].displayWidth * .25, 0x000000).setAlpha(0.3)
+        this.cards[name].costBG = this.add.rectangle(x, y, this.cards[name].displayWidth * .875, this.cards[name].displayWidth * .25, 0x000000).setAlpha(0.3)
             .setPosition(x, y + this.cards[name].displayHeight * .3);
 
         this.cards[name].costText = this.add.text(x, y, this.cards[name].cost, costTextStyle).setOrigin(0.5).setAlpha(.9);
@@ -271,10 +316,8 @@ class GameScene extends Phaser.Scene {
     }
 
     upgardeCard(card){
-        if (card.level) {
-            this.decreaseMoney(card.cost);
-        }
-        card?.level ? card.level++ : card.level = 1;
+        card.level++;
+        this.decreaseMoney(card.cost);
         card.cost = Math.round((config.upgradeCardCost * card.level) * (0.135 * card.level + 1));
         if (card.level > 1) {
             card.levelText.setText(`Lv. ${card.level}`);
@@ -286,12 +329,18 @@ class GameScene extends Phaser.Scene {
     }
 
     increaseMoney(value){
+        if (!this.money && this.money !== 0) {
+            this.money = 0;
+        }
         this.money += Math.round(value);
         this.cashText.setText(this.money);
         this.checkUpgradeCardsStatus();
     }
 
     decreaseMoney(value){
+        if (!this.money && this.money !== 0) {
+            this.money = 0;
+        }
         this.money -= Math.round(value);
         this.cashText.setText(this.money);
     }
@@ -301,7 +350,7 @@ class GameScene extends Phaser.Scene {
             font: `${config.width * .0295}px kidcraft`,
             fill: '#56D639',
         };
-        let text = this.add.text(this.object.x, this.object.y, '+' + value, textStyle)
+        let text = this.add.text(this.object.x, this.object.y - this.object.displayHeight * .2, '+' + value, textStyle)
             .setOrigin(0.5)
             .setScale(10)
             .setAlpha(0);
