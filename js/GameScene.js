@@ -12,6 +12,7 @@ class GameScene extends Phaser.Scene {
 
     create() {
         this.createBG();
+        this.createGameIcon();
         this.addObjects();
         this.createCashText();
         this.createUpgradeCards();
@@ -81,6 +82,50 @@ class GameScene extends Phaser.Scene {
             this.pointerTimer.paused = true;
             this.object.resetPosition();
         }, this);
+    }
+
+    createGameIcon(){
+        let icon_size = 60;
+        this.gameIcon = this.add.sprite(screenEndpoints.left + icon_size/2 + 8, screenEndpoints.top + icon_size/2 + 8, 'icon')
+            .setDisplaySize(icon_size, icon_size)
+            .setOrigin(0.5)
+            .setAlpha(0.65)
+            .setInteractive();
+
+        let timeline = this.tweens.createTimeline();
+        let initScale = this.gameIcon.scale;
+
+        timeline.add({
+            delay: 5000,
+            targets: this.gameIcon,
+            scale: this.gameIcon.scale * .8,
+            alpha: 1,
+            ease: 'Power2',
+            duration: 275,
+        });
+        timeline.add({
+            targets: this.gameIcon,
+            scale: initScale,
+            alpha: 0.65,
+            ease: 'Power1',
+            duration: 375,
+        });
+        timeline.add({
+            targets: this.gameIcon,
+            scale: this.gameIcon.scale * .8,
+            alpha: 1,
+            ease: 'Power2',
+            duration: 275,
+        });
+        timeline.add({
+            targets: this.gameIcon,
+            scale: initScale,
+            alpha: 0.65,
+            ease: 'Power1',
+            duration: 375,
+        });
+        timeline.loop = -1;
+        timeline.play();
     }
 
     addObjects(){
