@@ -25,8 +25,8 @@ class GameScene extends Phaser.Scene {
             repeat: 0,
         });
         */
-        this.createMoneyAnim(this.cards.strength.cost * 10);
 
+        this.createMoneyAnim(this.cards.strength.cost);
         this.createStartText();
     }
 
