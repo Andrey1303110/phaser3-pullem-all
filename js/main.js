@@ -66,8 +66,9 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-var screenEndpoints = {};
+var screenEndpoints;
 function setEndpoints() {
+    screenEndpoints = {};
     if ((document.body.clientWidth / document.body.clientHeight) === (16 / 9)) {
         screenEndpoints.left = 0;
         screenEndpoints.right = config.width;
