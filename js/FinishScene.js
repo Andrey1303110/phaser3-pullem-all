@@ -10,8 +10,23 @@ class FinishScene extends Phaser.Scene {
     create(){
         this.createBG();
         this.addObject();
-        this.downloadButton();
+        this.addDownloadButton();
+        this.addListeners();
     }
+
+    addListeners() {
+        window.addEventListener("orientationchange", () => { this.reinitHUD() });
+        window.addEventListener("resize", () => { this.reinitHUD() });
+    }
+
+    reinitHUD() {
+        setEndpoints();
+        if (this.button) {
+            this.button.destroy();
+            this.buttonText.destroy();
+            this.addDownloadButton();
+        }
+    };
 
     createBG(){
         this.sceneBG = this.add.sprite(config.width/2, config.height/2, 'rays').setOrigin(.5).setInteractive();
@@ -40,7 +55,7 @@ class FinishScene extends Phaser.Scene {
         });
     }
 
-    downloadButton(){
+    addDownloadButton(){
         this.button = this.add.sprite(config.width/2, screenEndpoints.bottom, 'downloadButton')
             .setDisplaySize(262, 80)
             .setOrigin(.5)
