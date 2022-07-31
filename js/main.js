@@ -14,23 +14,26 @@ var config = {
 
     variatons: [
         {
+            object: 'nose_hair',
+            object_scale: 2/3,
+            object_pos_corrections: {
+                x: 2.25,
+                y: .3,
+            },
+            bg: 'man',
+            trap: 'face',
+            overlap_cof: 0.925
+        },
+        {
             object: 'sword',
             object_scale: 0.4,
+            object_pos_corrections: {
+                x: 0,
+                y: -.1,
+            },
             bg: 'forest',
             trap: 'stones',
-            overlap_cof: 0.87
-        },
-        {
-            object: 'sword',
-            object_scale: .4,
-            bg: 'forest',
-            trap: 'stones',
-        },
-        {
-            object: 'sword',
-            object_scale: .4,
-            bg: 'forest',
-            trap: 'stones',
+            overlap_cof: 0.84
         },
     ],
 

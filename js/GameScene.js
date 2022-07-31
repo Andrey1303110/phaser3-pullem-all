@@ -93,7 +93,7 @@ class GameScene extends Phaser.Scene {
     }
 
     createBG() {
-        this.sceneBG = this.add.sprite(config.width/2, config.height/2, this.variant.bg).setAlpha(.8).setOrigin(.5).setInteractive();
+        this.sceneBG = this.add.sprite(config.width/2, config.height/2, this.variant.bg).setAlpha(.925).setOrigin(.5).setInteractive();
 
         let scaleX = this.cameras.main.width / this.sceneBG.width;
         let scaleY = this.cameras.main.height / this.sceneBG.height;
@@ -157,6 +157,7 @@ class GameScene extends Phaser.Scene {
             texture: this.variant.object,
             scale: this.variant.object_scale,
             overlap_cof: this.variant.overlap_cof,
+            pos_corrections: this.variant.object_pos_corrections,
         });
         this.trap = new Trap({
             scene: this,

@@ -7,6 +7,7 @@ class PullingObject extends Phaser.GameObjects.Sprite {
     init(data) {
         this.scene.add.existing(this);
         this.setScale(data.scale);
+        this.pos_corrections = data.pos_corrections;
         this.overlap_cof = data.overlap_cof;
         this.initColors();
         this.initSteps();
@@ -109,8 +110,8 @@ class PullingObject extends Phaser.GameObjects.Sprite {
     }
 
     setPositions(trap) {
-        this.x = trap.x;
-        this.y = trap.y - this.displayHeight / 2;
+        this.x = trap.x + (this.pos_corrections.x * this.displayWidth);
+        this.y = trap.y - this.displayHeight / 2 - (this.pos_corrections.y * this.displayHeight);
         this.initPosition = this.y;
 
         this.resetTween = this.scene.tweens.add({
