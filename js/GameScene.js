@@ -42,6 +42,7 @@ class GameScene extends Phaser.Scene {
         if (this.cashBG) {
             this.cashBG.destroy();
             this.cashText.destroy();
+            this.cashIcon.destroy();
             this.createCashText();
         }
         if (this.gameIcon) {
