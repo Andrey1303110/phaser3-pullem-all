@@ -351,7 +351,7 @@ class GameScene extends Phaser.Scene {
             font: `${config.width * .0295}px kidcraft`,
             fill: '#56D639',
         };
-        let text = this.add.text(this.object.x, this.object.y - this.object.displayHeight * .2, '+' + value, textStyle)
+        let text = this.add.text(config.width/2, this.object.y - this.object.displayHeight * .2, '+' + value, textStyle)
             .setOrigin(0.5)
             .setScale(10)
             .setAlpha(0);
