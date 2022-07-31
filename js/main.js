@@ -17,12 +17,12 @@ var config = {
             object: 'nose_hair',
             object_scale: 2/3,
             object_pos_corrections: {
-                x: 2.25,
+                x: 2.1,
                 y: .3,
             },
             bg: 'man',
             trap: 'face',
-            overlap_cof: 0.925
+            overlap_cof: 0.8
         },
         {
             object: 'sword',
