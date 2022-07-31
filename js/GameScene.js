@@ -1,4 +1,3 @@
-var test;
 class GameScene extends Phaser.Scene {
     constructor() {
         super("Game");
@@ -395,19 +394,4 @@ class GameScene extends Phaser.Scene {
 
         timeline.play();
     }
-
-    /*
-    createSounds(){
-        if (this.sounds) {
-            return;
-        }
-        this.sounds = {
-            rocket_launch: this.sound.add('rocket_launch'),
-            fire_launch: this.sound.add('fire_launch'),
-            missile_launch: this.sound.add('missile_launch'),
-            explosion_small: this.sound.add('explosion_small'),
-            wings: this.sound.add('wings'),
-        };
-    }
-    */
 }
