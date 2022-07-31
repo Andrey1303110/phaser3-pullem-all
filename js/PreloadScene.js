@@ -4,25 +4,25 @@ class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('icon', 'sprites/icon.png');
-        this.load.image('forest', 'sprites/forest.png');
-        this.load.image('rays', 'sprites/rays.png');
-        this.load.image('stones', 'sprites/stones.png');
-        this.load.image('sword', 'sprites/sword.png');
-        this.load.image('cash', 'sprites/cash.png');
-        this.load.image('income', 'sprites/income.png');
-        this.load.image('stamina', 'sprites/stamina.png');
-        this.load.image('strength', 'sprites/strength.png');
-        this.load.image('downloadButton', 'sprites/downloadButton.png');
-        //this.load.audio('wings', 'assets/sounds/wings.mp3');
+        this.TEXTURE_LOAD = 0;
+        this.TEXTURE_ALL = 0;
+        this.textures.on('onload', this.textureLoaded, this);
+
+        Object.keys(base64).forEach(name => {
+            this.TEXTURE_ALL++;
+            this.textures.addBase64(name, base64[name]);
+        });
     }
 
-    init(){
-        setEndpoints();
-    }
+    textureLoaded() {
+        this.TEXTURE_LOAD++;
+        if(this.TEXTURE_LOAD === this.TEXTURE_ALL) {
+            document.querySelector('body').style.display = 'block';
+            document.querySelector('#logo').remove();
+            document.querySelector('.loader').remove();
 
-    create() {
-        //this.scene.start('Start');
-        this.scene.start('Game');
+            setEndpoints();
+            this.scene.start('Game');
+        }
     }
 }
