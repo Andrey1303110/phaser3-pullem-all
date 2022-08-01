@@ -411,12 +411,6 @@
             }
         }
 
-        class StartScene extends Phaser.Scene {
-            constructor() {
-                super("Start");
-            }
-        }
-
         class GameScene extends Phaser.Scene {
             constructor() {
                 super("Game");
@@ -545,8 +539,8 @@
                     .setAlpha(0.65)
                     .setInteractive();
 
-                this.gameIcon.on('pointerdown', ()=>{
-                    if(window.mintegralNetworkID) {
+                this.gameIcon.on('pointerdown', () => {
+                    if (window.mintegralNetworkID) {
                         window.gameEnd && window.gameEnd();
                     }
                     gotoStoreHandler();
@@ -976,7 +970,7 @@
                 autoCenter: Phaser.Scale.CENTER_BOTH,
             },
 
-            scene: [PreloadScene, StartScene, GameScene, FinishScene],
+            scene: [PreloadScene, GameScene, FinishScene],
 
             variatons: [
                 {

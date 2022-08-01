@@ -26,12 +26,12 @@ var config = {
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
 
-    scene: [PreloadScene, StartScene, GameScene, FinishScene],
+    scene: [PreloadScene, GameScene, FinishScene],
 
     variatons: [
         {
             object: 'nose_hair',
-            object_scale: 2/3,
+            object_scale: 2 / 3,
             object_pos_corrections: {
                 x: 2.1,
                 y: .3,
@@ -85,7 +85,7 @@ function setEndpoints() {
                 screenEndpoints.top = (config.height - ((config.width / config.height) / (document.body.clientWidth / document.body.clientHeight) * config.height)) / 2;
                 screenEndpoints.bottom = config.height - (config.height - ((config.width / config.height) / (document.body.clientWidth / document.body.clientHeight) * config.height)) / 2;
             }
-    
+
         } else {
             screenEndpoints.left = (config.width / 2) - (((config.height / document.body.clientHeight) * document.body.clientWidth) / 2);
             screenEndpoints.right = (config.width / 2) + (((config.height / document.body.clientHeight) * document.body.clientWidth) / 2);

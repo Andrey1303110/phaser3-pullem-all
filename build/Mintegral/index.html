@@ -284,12 +284,6 @@
 			}
 		}
 
-		class StartScene extends Phaser.Scene {
-			constructor() {
-				super("Start");
-			}
-		}
-
 		class GameScene extends Phaser.Scene {
 			constructor() {
 				super("Game");
@@ -849,7 +843,7 @@
 				autoCenter: Phaser.Scale.CENTER_BOTH,
 			},
 
-			scene: [PreloadScene, StartScene, GameScene, FinishScene],
+			scene: [PreloadScene, GameScene, FinishScene],
 
 			variatons: [
 				{
