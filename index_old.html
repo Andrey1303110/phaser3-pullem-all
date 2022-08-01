@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <style>
+        body {
+            margin: 0 !important;
+            overflow: hidden;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'coolvetica';
+            src: url("fonts/coolvetica.otf") format("opentype");    
+        }
+
+        @font-face {
+            font-family: 'kidcraft';
+            src: url("fonts/KidCraft.ttf") format("truetype");
+        }
+
+        .preloadFont {
+            position: absolute;
+            left: -100vw;
+            top: -100vw;
+            visibility: hidden;
+        }
+
+        .coolvetica {
+            font-family: 'coolvetica';
+        }
+
+        .kidcraft {
+            font-family: 'kidcraft';
+        }
+
+        #logo {
+            position: absolute;
+            left: 50%;
+            top: 10vh;
+            transform: translateX(-50%);
+            width: 50%;
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 9vw;
+        }
+
+        .loader {
+            position: absolute;
+            top: 65%;
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 10vh;
+            height: 10vh;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (orientation: landscape) {
+            #logo {
+                width: 40vh;
+                border-radius: 6vh;
+            }
+
+            .loader {
+                border: 1.5vw solid #f3f3f3;
+                border-top: 1.5vw solid #3498db;
+                width: 7vh;
+                height: 7vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gameDiv"></div>
+    <div class="loader"></div>
+    <img id="logo" src="sprites/icon.png">
+    <div class="preloadFont coolvetica">.</div>
+    <div class="preloadFont kidcraft">.</div>
+    <script src="js/phaser.min.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/PullingObject.js"></script>
+    <script src="js/Trap.js"></script>
+    <script src="js/PreloadScene.js"></script>
+    <script src="js/GameScene.js"></script>
+    <script src="js/FinishScene.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
