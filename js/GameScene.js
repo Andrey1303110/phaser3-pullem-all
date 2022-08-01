@@ -4,7 +4,7 @@ class GameScene extends Phaser.Scene {
     }
 
     init() {
-        this.variant = config.variatons[0];
+        this.variant = config.variatons[Phaser.Math.Between(0,1)];
         this.money = 0;
         this.cards = {};
     }
