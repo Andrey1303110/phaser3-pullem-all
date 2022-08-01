@@ -44,6 +44,11 @@ class GameScene extends Phaser.Scene {
 
     reinitHUD() {
         setEndpoints();
+        if (this.object) {
+            this.object.destroy();
+            this.trap.destroy();
+            this.addObjects();
+        }
         if (this.cashBG) {
             this.cashBG.destroy();
             this.cashText.destroy();
@@ -121,7 +126,12 @@ class GameScene extends Phaser.Scene {
             .setAlpha(0.65)
             .setInteractive();
 
-        this.gameIcon.on('pointerdown', gotoStoreHandler);
+        this.gameIcon.on('pointerdown', ()=>{
+            if(window.mintegralNetworkID) {
+                window.gameEnd && window.gameEnd();
+            }
+            gotoStoreHandler();
+        });
 
         let timeline = this.tweens.createTimeline();
         let initScale = this.gameIcon.scale;
