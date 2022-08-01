@@ -18,9 +18,12 @@ class PreloadScene extends Phaser.Scene {
         this.TEXTURE_LOAD++;
         if(this.TEXTURE_LOAD === this.TEXTURE_ALL) {
             document.querySelector('body').style.display = 'block';
-            document.querySelector('#logo').remove();
-            document.querySelector('.loader').remove();
-
+            if (document.querySelector('#logo')) {
+                document.querySelector('#logo').style.display = 'none';
+                document.querySelector('.loader').style.display = 'none';
+                document.querySelector('#logo').remove();
+                document.querySelector('.loader').remove();
+            }
             setEndpoints();
             this.scene.start('Game');
         }
