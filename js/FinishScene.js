@@ -12,6 +12,10 @@ class FinishScene extends Phaser.Scene {
         this.addObject();
         this.addDownloadButton();
         this.addListeners();
+
+        if(window.mintegralNetworkID) {
+            window.gameEnd && window.gameEnd();
+        }
     }
 
     addListeners() {
@@ -104,5 +108,7 @@ class FinishScene extends Phaser.Scene {
         });
         timeline.loop = -1;
         timeline.play();
+
+        this.add.rectangle(config.width/2, config.height/2, config.width, config.height, '0x000000', 0).setInteractive().on('pointerdown', gotoStoreHandler);
     }
 }
