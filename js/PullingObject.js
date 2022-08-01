@@ -52,6 +52,10 @@ class PullingObject extends Phaser.GameObjects.Sprite {
 
     pull(pointer) {
         if (this.pullingIsOn && pointer?.isDown) {
+            Object.keys(this.scene.cards).forEach(name => {
+                this.scene.deleteUpgardeCard(this.scene.cards[name]);
+                this.scene.cards[name].destroy();
+            });
             this.scene.startText.destroy();
             this.resetTween.pause();
 
@@ -75,11 +79,11 @@ class PullingObject extends Phaser.GameObjects.Sprite {
             }
             this.setTint(Phaser.Display.Color.GetColor(this.colors.red, this.colors.other, this.colors.other));
     
-            /*
+            
             if("vibrate" in window.navigator) {
-                window.navigator.vibrate(200);
+                window.navigator.vibrate(1000/60);
             }
-            */
+            
         }
     }
 
@@ -95,6 +99,7 @@ class PullingObject extends Phaser.GameObjects.Sprite {
         }
 
         this.scene.createStartText();
+        this.scene.createUpgradeCards();
     }
 
     resetColorObject(updateRate){

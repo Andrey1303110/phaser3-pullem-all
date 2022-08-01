@@ -287,6 +287,10 @@
 
             pull(pointer) {
                 if (this.pullingIsOn && pointer?.isDown) {
+                    Object.keys(this.scene.cards).forEach(name => {
+                        this.scene.deleteUpgardeCard(this.scene.cards[name]);
+                        this.scene.cards[name].destroy();
+                    });
                     this.scene.startText.destroy();
                     this.resetTween.pause();
 
@@ -330,6 +334,7 @@
                 }
 
                 this.scene.createStartText();
+                this.scene.createUpgradeCards();
             }
 
             resetColorObject(updateRate) {
@@ -782,7 +787,7 @@
                     font: `${config.width * .0295}px kidcraft`,
                     fill: '#56D639',
                 };
-                let text = this.add.text(config.width / 2, this.object.y - this.object.displayHeight * .2, '+' + value, textStyle)
+                let text = this.add.text(config.width / 2, this.object.y - this.object.displayHeight * .335, '+' + value, textStyle)
                     .setOrigin(0.5)
                     .setScale(10)
                     .setAlpha(0);
