@@ -60,11 +60,9 @@ var config = {
     },
 
     upgradeCardCost: 35,
-    moneyIncrease: 35,
+    moneyIncrease: 40,
     redColorLimit: 65,
 };
-
-var game = new Phaser.Game(config);
 
 var screenEndpoints;
 function setEndpoints() {
