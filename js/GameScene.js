@@ -3,8 +3,8 @@ class GameScene extends Phaser.Scene {
         super("Game");
     }
 
-    init() {
-        this.variant = config.variatons[Phaser.Math.Between(0,1)];
+    init(data) {
+        this.variant = data;
         this.money = 0;
         this.cards = {};
     }
@@ -28,13 +28,6 @@ class GameScene extends Phaser.Scene {
         this.createMoneyAnim(this.cards.strength.cost);
         this.createStartText();
         this.addListeners();
-        this.addClickAreaSIP();
-    }
-
-    addClickAreaSIP() {
-        if (window.SIPID) {
-            this.add.rectangle(config.width / 2, config.height / 2, config.width, config.height, '0x000000', 0).setInteractive().on('pointerdown', gotoStoreHandler);
-        }
     }
 
     addListeners() {
@@ -62,6 +55,7 @@ class GameScene extends Phaser.Scene {
         if (this.cards) {
             this.createUpgradeCards();
         }
+        this.createStartText();
     };
 
     checkPointer(pointer) {
@@ -81,7 +75,7 @@ class GameScene extends Phaser.Scene {
             font: `${config.height * .075}px coolvetica`,
             fill: '#ffffff',
         };
-        this.startText = this.add.text(config.width / 2, config.height * .67, 'Hold to pull', textStyle).setOrigin(0.5).setAlpha(.95);
+        this.startText = this.add.text(config.width / 2, config.height * .67, 'Hold to pull', textStyle).setOrigin(0.5).setAlpha(.875);
 
         let initScale = this.startText.scale;
 

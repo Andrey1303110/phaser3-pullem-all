@@ -12,15 +12,18 @@ class FinishScene extends Phaser.Scene {
         this.addObject();
         this.addDownloadButton();
         this.addListeners();
-
-        if(window.mintegralNetworkID) {
-            window.gameEnd && window.gameEnd();
-        }
+        this.addClickAreaSIP();
     }
 
     addListeners() {
         window.addEventListener("orientationchange", () => { this.reinitHUD() });
         window.addEventListener("resize", () => { this.reinitHUD() });
+    }
+
+    addClickAreaSIP() {
+        if (window.SIPID) {
+            this.add.rectangle(config.width / 2, config.height / 2, config.width, config.height, '0x000000', 0).setInteractive().on('pointerdown', gotoStoreHandler);
+        }
     }
 
     reinitHUD() {

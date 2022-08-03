@@ -25,7 +25,7 @@ class PreloadScene extends Phaser.Scene {
                 document.querySelector('.loader').remove();
             }
             setEndpoints();
-            this.scene.start('Game');
+            this.scene.start('Selecting');
         }
     }
 }
