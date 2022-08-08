@@ -42,7 +42,7 @@ var config = {
             bg: 'man',
             trap: 'face',
             overlap_cof: 0.8,
-            text: "Pulling nose hair"
+            text: "Pull nose hair"
         },
         {
             object: 'sword',
@@ -54,7 +54,7 @@ var config = {
             bg: 'forest',
             trap: 'stones',
             overlap_cof: 0.84,
-            text: "Pulling sword"
+            text: "Pull sword"
         },
     ],
 
